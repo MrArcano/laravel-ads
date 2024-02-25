@@ -19,23 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/get-session-info', function (Request $request) {
-
-    $data = $request->header();
-    $sessionLifetime = Config::get('session.lifetime');
-
-
-    // Recupera l'informazione della sessione
-    $sessionExist = session('visita_effettuata', false);
-    $token = session()->getId();
-
-    // Restituisci l'informazione come risposta JSON
-    return response()->json(compact('sessionExist','token','sessionLifetime'));
-});
-
 Route::get('/set-session', function (Request $request) {
-
-    $data = $request->header();
 
     $sessionExist = $request->session()->exists('visita_effettuata');
 
@@ -49,6 +33,10 @@ Route::get('/set-session', function (Request $request) {
     }
     $token = session()->getId();
 
+    $response = response()->json(compact('createSession', 'sessionExist', 'token'));
+
     // Restituisci una risposta JSON
-    return response()->json(compact('createSession','sessionExist','token'));
+    return $response;
 });
+
+
